@@ -1,8 +1,8 @@
-#define reciever_throttle 3  // receiver for right
-#define reciever_direction 6 // receiver for left
+#define reciever_throttle 3  // Receiver for right
+#define reciever_direction 6 // Receiver for left         
 
-#define reciever_motor1 7  // receiver for claw1
-#define reciever_motor2 8  // receiver for claw2
+#define reciever_motor1 9  // Receiver for claw1
+#define reciever_motor2 11  // Receiver for claw2
 
 #define IN1 A1
 #define IN2 A2
@@ -13,10 +13,10 @@
 
 #define IN1c 2
 #define IN2c 4
-#define IN3c 9
-#define IN4c 11
+#define IN3c 7
+#define IN4c 8
 
-int lastThrottle = 0, lastDirection = 0, lastMotor1 = 0, lastMotor2 = 0;  // Store last valid values
+//int lastThrottle = 0, lastDirection = 0, lastMotor1 = 0, lastMotor2 = 0;  // Store last valid values
 
 void setup() {
     Serial.begin(9600);
@@ -41,43 +41,29 @@ void setup() {
 }
 
 void loop() {
-    unsigned long throttlespeed = pulseIn(reciever_throttle, HIGH, 25000);  // Timeout = 25ms
+    unsigned long throttlespeed = pulseIn(reciever_throttle, HIGH, 25000);
     unsigned long directionspeed = pulseIn(reciever_direction, HIGH, 25000);
     unsigned long motor1speed = pulseIn(reciever_motor1, HIGH, 25000);
     unsigned long motor2speed = pulseIn(reciever_motor2, HIGH, 25000);
 
-    // Set default values if signal is lost
-    if (throttlespeed == 0 || throttlespeed < 900 || throttlespeed > 2100) throttlespeed = 1500;  // Neutral
+    if (throttlespeed == 0 || throttlespeed < 900 || throttlespeed > 2100) throttlespeed = 1500;
     if (directionspeed == 0 || directionspeed < 900 || directionspeed > 2100) directionspeed = 1500;
-    if (motor1speed == 0 || motor1speed < 900 || motor1speed > 2100) motor1speed = 1500;
-    if (motor2speed == 0 || motor2speed < 900 || motor2speed > 2100) motor2speed = 1500;
 
     int throttle = map(throttlespeed, 1000, 2000, -255, 255);
     int direction = map(directionspeed, 1000, 2000, -255, 255);
-    int motor1 = map(motor1speed, 1000, 2000, -255, 255);
-    int motor2 = map(motor2speed, 1000, 2000, -255, 255);
+    
+    if (abs(throttle) < 30) throttle = 0;
+    if (abs(direction) < 30) direction = 0;
 
-    // Apply dead zone
-    if (abs(throttle) < 10) throttle = 0;
-    if (abs(direction) < 10) direction = 0;
-    if (abs(motor1) < 10) motor1 = 0;
-    if (abs(motor2) < 10) motor2 = 0;
-
-    // Save last valid values
-    lastThrottle = throttle;
-    lastDirection = direction;
-    lastMotor1 = motor1;
-    lastMotor2 = motor2;
+    //lastThrottle = throttle;
+    //lastDirection = direction;
 
     int left_speed = throttle + direction;
     int right_speed = throttle - direction;
 
     left_speed = constrain(left_speed, -255, 255);
     right_speed = constrain(right_speed, -255, 255);
-    motor1 = constrain(motor1, -255, 255);
-    motor2 = constrain(motor2, -255, 255);
 
-    // Left Motor Control
     if (left_speed > 0) {
         digitalWrite(IN1, HIGH);
         digitalWrite(IN2, LOW);
@@ -92,7 +78,6 @@ void loop() {
         analogWrite(ENA, 0);
     }
 
-    // Right Motor Control
     if (right_speed > 0) {
         digitalWrite(IN3, HIGH);
         digitalWrite(IN4, LOW);
@@ -108,10 +93,10 @@ void loop() {
     }
 
     // Claw Motor 1 Control
-    if (motor1 > 0) {
+    if (motor1speed > 1800) { 
         digitalWrite(IN1c, HIGH);
         digitalWrite(IN2c, LOW);
-    } else if (motor1 < 0) {
+    } else if (motor1speed < 1200) {
         digitalWrite(IN1c, LOW);
         digitalWrite(IN2c, HIGH);
     } else {
@@ -120,10 +105,10 @@ void loop() {
     }
 
     // Claw Motor 2 Control
-    if (motor2 > 0) {
+    if (motor2speed > 1800) {
         digitalWrite(IN3c, HIGH);
         digitalWrite(IN4c, LOW);
-    } else if (motor2 < 0) {
+    } else if (motor2speed < 1200) {
         digitalWrite(IN3c, LOW);
         digitalWrite(IN4c, HIGH);
     } else {
@@ -131,5 +116,5 @@ void loop() {
         digitalWrite(IN4c, LOW);
     }
 
-    delay(10);  //delay
+    delay(10);
 }

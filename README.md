@@ -71,6 +71,13 @@
 </div>
 
 <h2 align="center">Mechanism:</h2>
+<div>
+  <video width="600">
+    <source src="Bot/bot.webm" type="video/webm">
+    Your browser does not support the video tag
+  </video>
+
+</div>
 
 ###
 

@@ -61,8 +61,16 @@
       <td>As per need</td></td>
       <td>Helps to grab the object</td>
     </tr>
+    <tr>
+      <td>8</td>
+      <td>Chassis</td>
+      <td>1</td></td>
+      <td>To mount all components</td>
+    </tr>
   </table>
 </div>
+
+<h2 align="center">Mechanism:</h2>
 
 ###
 

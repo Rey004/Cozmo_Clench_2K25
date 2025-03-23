@@ -72,6 +72,7 @@
 
 <!--<h2 align="center">Mechanism:</h2>
 <p></p>-->
+<a href="Manual_Robotics.pdf">📙 Rule Book !!</a>
 
 ###
 

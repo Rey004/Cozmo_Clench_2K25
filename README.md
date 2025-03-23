@@ -45,7 +45,7 @@
     </tr>
     <tr>
       <td>5</td>
-      <td>Motor Drivers</td>
+      <td>L298N Motor Drivers</td>
       <td>3</td>
       <td>To provide enough current and to control it</td>
     </tr>

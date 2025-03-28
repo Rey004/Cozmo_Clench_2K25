@@ -76,6 +76,7 @@
 ###
 
 <a href="Manual_Robotics.pdf">📙 Rule Book !!</a>
+<a href="Manual Robotics 2K25 Report.pdf">📄 Project Report</a>
 
 ###
 
